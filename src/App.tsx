@@ -6,11 +6,14 @@ import {
   Switch
 } from "react-router-dom";
 import './App.css';
-import SignUp from './SignUp';
-import Login from './Login';
-import Default from './Default';
-import Success from './Success';
+import SignUp from './pages/SignUp';
+import Login from './pages/Login';
+import Default from './pages/Default';
+import Success from './pages/Success';
+import Dashboard from './pages/Main';
+import SignUpp from './pages/SignUpp';
 import 'fontsource-roboto'
+import {PrivateRoute} from './components/routes/PrivateRoute'
 
 function App() {
   return (
@@ -21,6 +24,8 @@ function App() {
           <Route exact path="/signUp" component={SignUp} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/success" component={Success} />
+          <Route exact path="/succ" component={SignUpp} />
+          <PrivateRoute exact path = '/dashboard' component={Dashboard} />
           </Switch>
         </Router>
        

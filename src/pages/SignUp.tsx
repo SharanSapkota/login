@@ -1,22 +1,36 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import {useState} from 'react'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, createStyles } from "@material-ui/core/styles"
 import 'fontsource-roboto';
-import { addUser } from './API/newUser'
-import {useHistory} from "react-router-dom";
+import { addUser } from '../services/newUser'
+import { useHistory } from "react-router-dom";
+import Required from '../Required';
+import { useForm } from 'react-hook-form'
+import {useStyles as abc} from '../css'
+
 
 interface Props {
 
 }
 
+
+
 const useStyles = makeStyles(() =>
 
     createStyles ({
     root: {
-        font: "10px"
+      
+    display: 'flex',
+    flexDirection: 'column',
+            alignItems: 'center',
+            marginTop: "10vh",
+        },
+
+        padd: {
+            padding: "20px",
         }
     })
 )
@@ -24,18 +38,25 @@ const useStyles = makeStyles(() =>
 export default function Login({ }: Props): ReactElement {
 
     const history = useHistory();
+
+    const {register, handleSubmit, watch} = useForm()
     const [Values, setValues] = useState({
     "username": "",
     "password": "",
         "email": "",
         "phone_number": ""
     })
+    console.log(watch("username"))
+
+    const [Message, setMessage] = useState("")
+    
 
     const signInHandler = () => {
         history.push('/login')
     }
     
- const onClickHandler = async () => {
+    const onClickHandler = async () => {
+     if(!Values.username) setMessage("username-e") 
      const newss = await addUser(Values)
      console.log(newss)
 
@@ -43,8 +64,11 @@ export default function Login({ }: Props): ReactElement {
          history.replace('/success')
      } else if (newss === 201) {
          alert("enter all fields")
+     } else if (newss === 202) {
+         alert ("email already taken")
      }
     }
+    console.log(Message)
 
 const onChangeHandler = (e: any) => {
     console.log(e.target.value)
@@ -53,11 +77,27 @@ const onChangeHandler = (e: any) => {
     console.log(Values)
 
     const classes = useStyles()
+    var abcde = abc()
+
+    const onSubmit = () => {
+        console.log("hre")
+    }
+     console.log(register)
     return (
+             
         <div className={classes.root}>
+            <form onSubmit = {handleSubmit(onSubmit)}>  
+
+            <div className = {abcde.roott}>
+                Sign Up
+            </div>
           
+                <input {...register("username", {required: true})} />
+                <input {...register("password", {required: true})} />
+                <input {...register("email", {required: true})} />
+                
              <div>
-                <label>Username:  </label>
+             
 
                 <TextField
                         
@@ -71,9 +111,11 @@ const onChangeHandler = (e: any) => {
                     
                 />
             </div>
+            {!Values.username ? <Required text = "Username" /> : ""}
 
-            <div>
-                <label>Password:  </label>
+            <div className = {classes.padd}>
+                
+                
 
                 <TextField
                         type="password"
@@ -86,8 +128,9 @@ const onChangeHandler = (e: any) => {
                     
                 />
             </div>
-            <div>
-            <label>email:  </label>
+             {!Values.password ? <Required text = "Password" /> : ""}
+            <div className = {classes.padd}>
+        
 
                 <TextField
                     
@@ -98,10 +141,12 @@ const onChangeHandler = (e: any) => {
                     name = "email"
                     onChange = {(e) => onChangeHandler(e)}
                 
-            />
+                />
+                
             </div>
-            <div>
-            <label>Phone:  </label>
+             {!Values.email ? <Required text = "Email" /> : ""}
+            <div className = {classes.padd}>
+           
 
                 <TextField
                     
@@ -114,16 +159,19 @@ const onChangeHandler = (e: any) => {
                 
             />
             </div>
+                {!Values.phone_number ? <Required text = "Phone number" /> : ""}
 
             <Button onClick = {()=> onClickHandler()}>Submit</Button>
 
-            
-        
-          
             <div >
                 Already have account?
                  <Button onClick = {() => signInHandler()}>Login</Button>
-           </div>
-        </div>
-    )
+                </div>
+                <input type = "submit" />
+                </form>
+ 
+            </div>
+          
+        )
+          
 }
