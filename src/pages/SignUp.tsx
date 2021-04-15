@@ -91,14 +91,8 @@ const onChangeHandler = (e: any) => {
             <div className = {abcde.roott}>
                 Sign Up
             </div>
-          
-                <input {...register("username", {required: true})} />
-                <input {...register("password", {required: true})} />
-                <input {...register("email", {required: true})} />
-                
+                          
              <div>
-             
-
                 <TextField
                         
                         name="username"

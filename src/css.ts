@@ -8,7 +8,3 @@ export const useStyles = makeStyles(() => createStyles({
         color: "red"
     }
 }))
-
-// export const cssFunction = () => {
-//     return useStyles()
-// }

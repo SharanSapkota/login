@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import { makeStyles, createStyles } from "@material-ui/core/styles"
 
-
 interface Props {
     text: String
 }
